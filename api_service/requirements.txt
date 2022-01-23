@@ -1,0 +1,7 @@
+psycopg2-binary
+django
+djangorestframework
+requests
+pyyaml
+uritemplate
+coreapi

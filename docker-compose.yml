@@ -1,0 +1,31 @@
+version: "3.8"
+
+services:
+  api-service:
+    build: ./api_service
+    container_name: api-container
+    command: sh -c "python manage.py makemigrations &&
+                    python manage.py migrate &&
+                    python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - "pgdb"
+      - "calculation-service"
+  calculation-service:
+    build: ./calculation_service
+    container_name: calc-container
+    command: python manage.py runserver 0.0.0.0:8800
+    volumes:
+      - .:/app
+    ports:
+      - "8800:8800"
+  pgdb:
+    image: postgres
+    container_name: pgdb
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
